@@ -17,12 +17,12 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-// --- ESTO ES LO QUE FALTABA ---
+// Presets de escenarios rápidos para la simulación
 enum class ScenarioPreset { LIGHT, RUSH_HOUR, EMERGENCY, CHAOS }
-// ------------------------------
 
 class SimulationViewModel(application: Application) : AndroidViewModel(application) {
 
+    // Scope separado para la lógica pesada de la simulación
     private val logicScope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
 
     private val engine = SimulationEngine(
@@ -30,7 +30,7 @@ class SimulationViewModel(application: Application) : AndroidViewModel(applicati
         logicScope = logicScope
     )
 
-    // Asegúrate de tener el archivo HistoryManager.kt creado en la carpeta ui
+    // Se encarga de guardar y cargar el historial de simulaciones
     private val historyManager = HistoryManager(application.applicationContext)
 
     val snapshot: StateFlow<SimulationSnapshot> = engine.snapshot
@@ -39,7 +39,7 @@ class SimulationViewModel(application: Application) : AndroidViewModel(applicati
     private val _config = MutableStateFlow(SimulationConfig())
     val config: StateFlow<SimulationConfig> = _config.asStateFlow()
 
-    // Estado para la lista del historial
+    // Lista que usa la UI para mostrar el historial
     private val _historyList = MutableStateFlow<List<SimulationRecord>>(emptyList())
     val historyList: StateFlow<List<SimulationRecord>> = _historyList.asStateFlow()
 
@@ -59,13 +59,13 @@ class SimulationViewModel(application: Application) : AndroidViewModel(applicati
         engine.reset()
     }
 
-    // --- LÓGICA DE HISTORIAL ---
+    // Guardado de sesiones en el historial
     private fun saveCurrentSession() {
         val currentSnap = snapshot.value
         val stats = currentSnap.stats
 
-        // Solo guardamos si la simulación ha corrido más de 5 segundos
-        if (stats.simTimeMs > 5000) {
+        // Solo guardamos sesiones que hayan durado un mínimo
+        if (stats.simTimeMs > 6000) {
             viewModelScope.launch(Dispatchers.IO) {
                 historyManager.saveSession(
                     durationMs = stats.simTimeMs,
@@ -73,7 +73,7 @@ class SimulationViewModel(application: Application) : AndroidViewModel(applicati
                     avgSpeed = stats.avgSpeedCellsPerSec,
                     events = stats.activeEvents
                 )
-                // Recargar la lista para que se actualice la UI
+                // Recargamos el historial para reflejarlo en la UI
                 loadHistory()
             }
         }
@@ -91,7 +91,6 @@ class SimulationViewModel(application: Application) : AndroidViewModel(applicati
             loadHistory()
         }
     }
-    // ---------------------------
 
     fun loadSavedConfig(savedConfig: SimulationConfig) {
         _config.value = savedConfig
@@ -136,6 +135,7 @@ class SimulationViewModel(application: Application) : AndroidViewModel(applicati
         _config.value = _config.value.copy(eventEveryMs = s * 1000L)
     }
 
+    // Eventos manuales desde la UI
     fun accident() = engine.triggerAccident()
     fun roadworks() = engine.triggerRoadworks()
     fun congestion() = engine.triggerCongestion()
@@ -143,10 +143,14 @@ class SimulationViewModel(application: Application) : AndroidViewModel(applicati
 
     fun applyScenario(preset: ScenarioPreset) {
         val newCfg = when (preset) {
-            ScenarioPreset.LIGHT -> SimulationConfig(10, 1, 2, 140L, 1.0, 8000L, 1500L, 600L, true, true, true, 12000L)
-            ScenarioPreset.RUSH_HOUR -> SimulationConfig(50, 2, 2, 140L, 1.0, 8000L, 1500L, 600L, true, true, true, 12000L)
-            ScenarioPreset.EMERGENCY -> SimulationConfig(35, 10, 2, 140L, 1.2, 6000L, 1200L, 600L, true, true, true, 12000L)
-            ScenarioPreset.CHAOS -> SimulationConfig(40, 0, 2, 140L, 1.3, 8000L, 1500L, 600L, false, false, true, 12000L)
+            ScenarioPreset.LIGHT ->
+                SimulationConfig(10, 1, 2, 140L, 1.0, 8000L, 1500L, 600L, true, true, true, 12000L)
+            ScenarioPreset.RUSH_HOUR ->
+                SimulationConfig(50, 2, 2, 140L, 1.0, 8000L, 1500L, 600L, true, true, true, 12000L)
+            ScenarioPreset.EMERGENCY ->
+                SimulationConfig(35, 10, 2, 140L, 1.2, 6000L, 1200L, 600L, true, true, true, 12000L)
+            ScenarioPreset.CHAOS ->
+                SimulationConfig(40, 0, 2, 140L, 1.3, 8000L, 1500L, 600L, false, false, true, 12000L)
         }
         _config.value = newCfg
         engine.start(newCfg)
