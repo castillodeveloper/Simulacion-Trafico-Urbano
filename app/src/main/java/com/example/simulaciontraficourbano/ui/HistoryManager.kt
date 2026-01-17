@@ -86,7 +86,7 @@ class HistoryManager(private val context: Context) {
         return list
     }
 
-    // Opcional: Borrar historial
+    // Borrar historial
     fun clearHistory() {
         val file = File(context.filesDir, fileName)
         if (file.exists()) file.delete()
