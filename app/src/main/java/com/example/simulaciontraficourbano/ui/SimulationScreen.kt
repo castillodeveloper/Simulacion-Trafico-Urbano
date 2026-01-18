@@ -296,15 +296,6 @@ private fun ControlSection(viewModel: SimulationViewModel) {
                     Spacer(Modifier.width(4.dp))
                     Text("Reiniciar")
                 }
-
-                OutlinedButton(
-                    onClick = { viewModel.applyAndRestart() },
-                    modifier = Modifier.weight(1f)
-                ) {
-                    Icon(Icons.Default.Settings, null, modifier = Modifier.size(20.dp))
-                    Spacer(Modifier.width(4.dp))
-                    Text("Configurar")
-                }
             }
         }
     }
