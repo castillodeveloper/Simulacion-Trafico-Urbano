@@ -1,4 +1,4 @@
-package com.example.simulaciontraficourbano.ui
+package com.example.simulaciontraficourbano.view
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
@@ -23,7 +23,12 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.withTransform
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
-import com.example.simulaciontraficourbano.sim.*
+import com.example.simulaciontraficourbano.model.domain.EventType
+import com.example.simulaciontraficourbano.model.domain.LightColor
+import com.example.simulaciontraficourbano.model.domain.SimulationSnapshot
+import com.example.simulaciontraficourbano.model.domain.TrafficLightView
+import com.example.simulaciontraficourbano.model.domain.VehicleState
+import com.example.simulaciontraficourbano.viewmodel.SimulationViewModel
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable

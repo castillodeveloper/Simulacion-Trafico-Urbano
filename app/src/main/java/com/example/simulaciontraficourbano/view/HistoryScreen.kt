@@ -1,4 +1,4 @@
-package com.example.simulaciontraficourbano.ui
+package com.example.simulaciontraficourbano.view
 
 import android.content.Intent
 import androidx.compose.foundation.layout.*
@@ -16,7 +16,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.example.simulaciontraficourbano.data.SimulationRecord
+import com.example.simulaciontraficourbano.model.domain.data.SimulationRecord
+import com.example.simulaciontraficourbano.viewmodel.SimulationViewModel
 
 @Composable
 fun HistoryScreen(viewModel: SimulationViewModel) {

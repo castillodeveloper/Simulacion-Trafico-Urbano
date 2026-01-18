@@ -23,9 +23,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.simulaciontraficourbano.data.PreferencesManager
-import com.example.simulaciontraficourbano.ui.*
-import com.example.simulaciontraficourbano.ui.theme.SimuladorPSPTheme
+import com.example.simulaciontraficourbano.model.domain.data.PreferencesManager
+import com.example.simulaciontraficourbano.view.*
+import com.example.simulaciontraficourbano.view.theme.SimuladorPSPTheme
+import com.example.simulaciontraficourbano.viewmodel.SimulationViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

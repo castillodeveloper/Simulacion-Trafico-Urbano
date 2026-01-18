@@ -1,4 +1,4 @@
-package com.example.simulaciontraficourbano.ui.theme
+package com.example.simulaciontraficourbano.view.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

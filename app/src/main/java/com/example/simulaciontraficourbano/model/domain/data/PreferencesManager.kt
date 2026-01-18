@@ -1,7 +1,7 @@
-package com.example.simulaciontraficourbano.data
+package com.example.simulaciontraficourbano.model.domain.data
 
 import android.content.Context
-import com.example.simulaciontraficourbano.sim.SimulationConfig
+import com.example.simulaciontraficourbano.model.domain.SimulationConfig
 import java.lang.Double
 
 class PreferencesManager(context: Context) {

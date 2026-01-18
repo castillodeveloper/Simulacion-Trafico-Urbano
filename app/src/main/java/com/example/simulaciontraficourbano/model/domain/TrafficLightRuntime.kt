@@ -1,4 +1,4 @@
-package com.example.simulaciontraficourbano.sim
+package com.example.simulaciontraficourbano.model.domain
 
 import kotlinx.coroutines.*
 import java.util.concurrent.atomic.AtomicLong

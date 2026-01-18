@@ -1,5 +1,8 @@
-package com.example.simulaciontraficourbano.sim
+package com.example.simulaciontraficourbano.domain
 
+import com.example.simulaciontraficourbano.model.domain.GridPos
+import com.example.simulaciontraficourbano.model.domain.LightColor
+import com.example.simulaciontraficourbano.model.domain.VehicleType
 import org.junit.Test
 import org.junit.Assert.*
 

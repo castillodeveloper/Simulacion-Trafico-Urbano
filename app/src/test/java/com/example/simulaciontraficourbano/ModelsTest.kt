@@ -1,8 +1,17 @@
-package com.example.simulaciontraficourbano.sim
+package com.example.simulaciontraficourbano.domain
 
+import com.example.simulaciontraficourbano.model.domain.EventType
+import com.example.simulaciontraficourbano.model.domain.GridPos
+import com.example.simulaciontraficourbano.model.domain.LightColor
+import com.example.simulaciontraficourbano.model.domain.SimulationConfig
+import com.example.simulaciontraficourbano.model.domain.SimulationEvent
+import com.example.simulaciontraficourbano.model.domain.SimulationSnapshot
+import com.example.simulaciontraficourbano.model.domain.TrafficLightView
+import com.example.simulaciontraficourbano.model.domain.VehicleState
+import com.example.simulaciontraficourbano.model.domain.VehicleStatus
+import com.example.simulaciontraficourbano.model.domain.VehicleType
 import org.junit.Test
 import org.junit.Assert.*
-import org.junit.Before
 
 /**
  * ============================================================================

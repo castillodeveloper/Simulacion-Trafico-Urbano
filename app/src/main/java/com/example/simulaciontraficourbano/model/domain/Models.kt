@@ -1,4 +1,4 @@
-package com.example.simulaciontraficourbano.sim
+package com.example.simulaciontraficourbano.model.domain
 
 enum class VehicleType(val speedFactor: Double, val size: Float) {
     CAR(1.0, 0.70f),

@@ -1,4 +1,4 @@
-package com.example.simulaciontraficourbano.ui
+package com.example.simulaciontraficourbano.view
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -19,8 +19,9 @@ import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
-import com.example.simulaciontraficourbano.sim.SimulationSnapshot
-import com.example.simulaciontraficourbano.sim.SimulationStats
+import com.example.simulaciontraficourbano.model.domain.SimulationSnapshot
+import com.example.simulaciontraficourbano.model.domain.SimulationStats
+import com.example.simulaciontraficourbano.viewmodel.SimulationViewModel
 import kotlin.math.roundToInt
 
 @Composable

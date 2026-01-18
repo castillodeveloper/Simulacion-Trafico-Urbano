@@ -1,14 +1,14 @@
-package com.example.simulaciontraficourbano.ui
+package com.example.simulaciontraficourbano.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.simulaciontraficourbano.data.HistoryManager
-import com.example.simulaciontraficourbano.data.SimulationRecord
-import com.example.simulaciontraficourbano.sim.SimulationConfig
-import com.example.simulaciontraficourbano.sim.SimulationEngine
-import com.example.simulaciontraficourbano.sim.SimulationEvent
-import com.example.simulaciontraficourbano.sim.SimulationSnapshot
+import com.example.simulaciontraficourbano.model.domain.data.HistoryManager
+import com.example.simulaciontraficourbano.model.domain.data.SimulationRecord
+import com.example.simulaciontraficourbano.model.domain.SimulationConfig
+import com.example.simulaciontraficourbano.model.domain.SimulationEngine
+import com.example.simulaciontraficourbano.model.domain.SimulationEvent
+import com.example.simulaciontraficourbano.model.domain.SimulationSnapshot
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob

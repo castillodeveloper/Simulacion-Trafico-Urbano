@@ -1,4 +1,4 @@
-package com.example.simulaciontraficourbano.ui
+package com.example.simulaciontraficourbano.view
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -12,7 +12,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext // <--- IMPORTANTE
 import androidx.compose.ui.unit.dp
-import com.example.simulaciontraficourbano.data.PreferencesManager
+import com.example.simulaciontraficourbano.model.domain.data.PreferencesManager
+import com.example.simulaciontraficourbano.viewmodel.ScenarioPreset
+import com.example.simulaciontraficourbano.viewmodel.SimulationViewModel
 import kotlin.math.roundToInt
 
 @Composable
