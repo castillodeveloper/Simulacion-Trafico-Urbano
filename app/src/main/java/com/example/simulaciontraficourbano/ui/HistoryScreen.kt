@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.example.simulaciontraficourbano.data.SimulationRecord
 
 @Composable
 fun HistoryScreen(viewModel: SimulationViewModel) {

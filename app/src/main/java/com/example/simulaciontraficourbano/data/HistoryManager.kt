@@ -1,4 +1,4 @@
-package com.example.simulaciontraficourbano.ui
+package com.example.simulaciontraficourbano.data
 
 import android.content.Context
 import org.json.JSONArray

@@ -1,7 +1,8 @@
-package com.example.simulaciontraficourbano.ui
+package com.example.simulaciontraficourbano.data
 
 import android.content.Context
 import com.example.simulaciontraficourbano.sim.SimulationConfig
+import java.lang.Double
 
 class PreferencesManager(context: Context) {
     private val prefs = context.getSharedPreferences("sim_trafico_prefs", Context.MODE_PRIVATE)
@@ -12,7 +13,7 @@ class PreferencesManager(context: Context) {
             putInt("vehicleCount", config.vehicleCount)
             putInt("ambulanceCount", config.ambulanceCount)
             // Guardamos el double como bits (Long) para no perder precisión
-            putLong("simSpeed", java.lang.Double.doubleToRawLongBits(config.simSpeed))
+            putLong("simSpeed", Double.doubleToRawLongBits(config.simSpeed))
             putBoolean("lightsEnabled", config.lightsEnabled)
             putBoolean("collisionsEnabled", config.collisionsEnabled)
             putInt("greenSeconds", (config.lightGreenMs / 1000).toInt())
@@ -24,7 +25,7 @@ class PreferencesManager(context: Context) {
 
     fun loadConfig(): SimulationConfig {
         // Valores por defecto si es la primera vez que se abre la app
-        val speedBits = prefs.getLong("simSpeed", java.lang.Double.doubleToRawLongBits(1.0))
+        val speedBits = prefs.getLong("simSpeed", Double.doubleToRawLongBits(1.0))
         val greenSecs = prefs.getInt("greenSeconds", 8)
         val eventFreq = prefs.getInt("eventFreq", 12)
 
@@ -32,7 +33,7 @@ class PreferencesManager(context: Context) {
             gridSize = prefs.getInt("gridSize", 10),
             vehicleCount = prefs.getInt("vehicleCount", 30),
             ambulanceCount = prefs.getInt("ambulanceCount", 2),
-            simSpeed = java.lang.Double.longBitsToDouble(speedBits),
+            simSpeed = Double.longBitsToDouble(speedBits),
             lightsEnabled = prefs.getBoolean("lightsEnabled", true),
             collisionsEnabled = prefs.getBoolean("collisionsEnabled", true),
             lightGreenMs = greenSecs * 1000L,

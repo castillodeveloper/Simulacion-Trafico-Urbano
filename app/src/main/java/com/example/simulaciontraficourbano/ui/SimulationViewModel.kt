@@ -3,6 +3,8 @@ package com.example.simulaciontraficourbano.ui
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.simulaciontraficourbano.data.HistoryManager
+import com.example.simulaciontraficourbano.data.SimulationRecord
 import com.example.simulaciontraficourbano.sim.SimulationConfig
 import com.example.simulaciontraficourbano.sim.SimulationEngine
 import com.example.simulaciontraficourbano.sim.SimulationEvent

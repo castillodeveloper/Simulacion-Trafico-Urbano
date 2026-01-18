@@ -23,6 +23,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.simulaciontraficourbano.data.PreferencesManager
 import com.example.simulaciontraficourbano.ui.*
 import com.example.simulaciontraficourbano.ui.theme.SimuladorPSPTheme
 
