@@ -2,6 +2,7 @@ package com.example.simulaciontraficourbano.ui
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.gestures.rememberTransformableState
 import androidx.compose.foundation.gestures.transformable
@@ -54,23 +55,7 @@ fun SimulationScreen(viewModel: SimulationViewModel) {
     }
 
     Scaffold(
-        snackbarHost = { SnackbarHost(snackbarHostState) },
-        floatingActionButton = {
-            Column(
-                horizontalAlignment = Alignment.End,
-                verticalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                // Botón de reset zoom
-                SmallFloatingActionButton(
-                    onClick = {
-                        scale = 1f
-                        offset = Offset.Zero
-                    }
-                ) {
-                    Icon(Icons.Default.Refresh, "Reset Zoom")
-                }
-            }
-        }
+        snackbarHost = { SnackbarHost(snackbarHostState) }
     ) { padding ->
         Column(
             modifier = Modifier
@@ -219,10 +204,19 @@ fun SimulationScreen(viewModel: SimulationViewModel) {
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 // CONTROLES PRINCIPALES
-                ControlSection(viewModel)
+                ControlSection(
+                    viewModel = viewModel,
+                    onResetZoom = {
+                        scale = 1f
+                        offset = Offset.Zero
+                    }
+                )
 
                 // EVENTOS
                 EventsSection(viewModel)
+
+                // LEYENDA
+                LegendSection()
 
                 // INSPECTOR (si hay algo seleccionado)
                 if (selectedVehicle != null || selectedLight != null) {
@@ -256,7 +250,10 @@ private fun StatsRow(label: String, value: String) {
 }
 
 @Composable
-private fun ControlSection(viewModel: SimulationViewModel) {
+private fun ControlSection(
+    viewModel: SimulationViewModel,
+    onResetZoom: () -> Unit  // Nuevo parámetro
+) {
     Card(
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.primaryContainer
@@ -274,8 +271,10 @@ private fun ControlSection(viewModel: SimulationViewModel) {
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalAlignment = Alignment.CenterVertically
             ) {
+                // Botón Iniciar
                 Button(
                     onClick = { viewModel.start() },
                     modifier = Modifier.weight(1f),
@@ -288,6 +287,7 @@ private fun ControlSection(viewModel: SimulationViewModel) {
                     Text("Iniciar")
                 }
 
+                // Botón Reiniciar
                 OutlinedButton(
                     onClick = { viewModel.reset() },
                     modifier = Modifier.weight(1f)
@@ -295,6 +295,19 @@ private fun ControlSection(viewModel: SimulationViewModel) {
                     Icon(Icons.Default.Refresh, null, modifier = Modifier.size(20.dp))
                     Spacer(Modifier.width(4.dp))
                     Text("Reiniciar")
+                }
+
+                // Botón Reset Zoom (cuadrado)
+                OutlinedButton(
+                    onClick = onResetZoom,
+                    modifier = Modifier.size(56.dp),  // Tamaño cuadrado
+                    contentPadding = PaddingValues(0.dp)
+                ) {
+                    Icon(
+                        Icons.Default.CenterFocusStrong,
+                        contentDescription = "Reset Zoom",
+                        modifier = Modifier.size(24.dp)
+                    )
                 }
             }
         }
@@ -424,7 +437,76 @@ private fun InspectorRow(label: String, value: String) {
     }
 }
 
-// Función de dibujo del canvas (tu código actual mejorado)
+@Composable
+private fun LegendSection() {
+    var expanded by remember { mutableStateOf(false) }
+
+    Card(
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.secondaryContainer
+        )
+    ) {
+        Column(
+            modifier = Modifier.padding(16.dp)
+        ) {
+            // Header
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable { expanded = !expanded },
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    "Leyenda de Vehículos",
+                    style = MaterialTheme.typography.titleMedium,
+                    color = MaterialTheme.colorScheme.onSecondaryContainer
+                )
+
+                Icon(
+                    imageVector = if (expanded) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
+                    contentDescription = if (expanded) "Colapsar" else "Expandir",
+                    tint = MaterialTheme.colorScheme.onSecondaryContainer
+                )
+            }
+
+            // Contenido desplegable
+            if (expanded) {
+                Spacer(modifier = Modifier.height(12.dp))
+
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    LegendItem(name = "Ambulancia", colorName = "Rosa")
+                    LegendItem(name = "Autobús", colorName = "Amarillo")
+                    LegendItem(name = "Moto", colorName = "Blanco")
+                    LegendItem(name = "Coche", colorName = "Rojo")
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun LegendItem(name: String, colorName: String) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Text(
+            text = name,
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSecondaryContainer
+        )
+        Text(
+            text = colorName,
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = 0.7f)
+        )
+    }
+}
+
+// Función de dibujo del canvas
 private fun androidx.compose.ui.graphics.drawscope.DrawScope.drawTrafficCanvas(
     snapshot: SimulationSnapshot,
     scale: Float,
@@ -689,5 +771,6 @@ private fun androidx.compose.ui.graphics.drawscope.DrawScope.drawTrafficCanvas(
                 )
             }
         }
+
     }
 }

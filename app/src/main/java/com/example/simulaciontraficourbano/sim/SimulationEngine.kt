@@ -275,15 +275,10 @@ class SimulationEngine(
     }
 
     private fun randomColorArgb(rng: Random, type: VehicleType): Long = when (type) {
-        VehicleType.AMBULANCE -> 0xFFFF4444L
-        VehicleType.BUS -> 0xFF4444FFL
-        VehicleType.MOTO -> 0xFF44FF44L
-        VehicleType.CAR -> {
-            val r = 80 + rng.nextInt(160)
-            val g = 80 + rng.nextInt(160)
-            val b = 80 + rng.nextInt(160)
-            (0xFFL shl 24) or (r.toLong() shl 16) or (g.toLong() shl 8) or b.toLong()
-        }
+        VehicleType.AMBULANCE -> 0xFFFF69B4L  // Rosa (hotpink)
+        VehicleType.BUS -> 0xFFFFD700L        // Amarillo dorado
+        VehicleType.MOTO -> 0xFFFFFFFFL       // Blanco
+        VehicleType.CAR -> 0xFFDC143CL        // Rojo crimson (fijo)
     }
 
     internal fun getGridSize(): Int = gridSize
