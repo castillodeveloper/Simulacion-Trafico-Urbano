@@ -1,6 +1,7 @@
 package com.example.simulaciontraficourbano.ui
 
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.gestures.rememberTransformableState
 import androidx.compose.foundation.gestures.transformable
@@ -33,6 +34,7 @@ fun SimulationScreen(viewModel: SimulationViewModel) {
     var offset by remember { mutableStateOf(Offset.Zero) }
     var selectedVehicle by remember { mutableStateOf<VehicleState?>(null) }
     var selectedLight by remember { mutableStateOf<TrafficLightView?>(null) }
+    var statsExpanded by remember { mutableStateOf(true) }
 
     val snackbarHostState = remember { SnackbarHostState() }
 
@@ -73,7 +75,6 @@ fun SimulationScreen(viewModel: SimulationViewModel) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(padding)
         ) {
             // CANVAS PRINCIPAL (60% de la pantalla)
             Box(
@@ -130,42 +131,74 @@ fun SimulationScreen(viewModel: SimulationViewModel) {
                     )
                 }
 
-                // Overlay de estadísticas
+                // Panel de estadísticas desplegable - ARRIBA DEL TODO
                 Card(
                     modifier = Modifier
-                        .align(Alignment.TopStart)
-                        .padding(12.dp),
+                        .align(Alignment.TopCenter)
+                        .fillMaxWidth()
+                        .padding(horizontal = 8.dp, vertical = 0.dp),
                     colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.9f)
+                        containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.92f)
                     )
                 ) {
                     Column(
-                        modifier = Modifier.padding(12.dp),
-                        verticalArrangement = Arrangement.spacedBy(4.dp)
+                        modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp)
                     ) {
-                        Text(
-                            "Estadísticas en Tiempo Real",
-                            style = MaterialTheme.typography.titleSmall,
-                            color = MaterialTheme.colorScheme.primary
-                        )
-                        Divider(modifier = Modifier.padding(vertical = 4.dp))
-                        StatsRow("Vehículos activos", snap.stats.activeVehicles.toString())
-                        StatsRow("En movimiento", "${snap.stats.moving} (${((snap.stats.moving.toFloat() / snap.stats.activeVehicles.coerceAtLeast(1)) * 100).toInt()}%)")
-                        StatsRow("Detenidos", snap.stats.stopped.toString())
-                        StatsRow("Velocidad media", "%.2f".format(snap.stats.avgSpeedCellsPerSec))
-                        StatsRow("Tiempo total", "${snap.stats.simTimeMs / 1000}s")
+                        // Fila del título con zoom y botón de colapsar
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            // Título
+                            Text(
+                                "Estadísticas en Tiempo Real",
+                                style = MaterialTheme.typography.titleSmall,
+                                color = MaterialTheme.colorScheme.primary
+                            )
+
+                            // Zoom y botón de colapsar
+                            Row(
+                                horizontalArrangement = Arrangement.spacedBy(12.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                // Indicador de zoom
+                                Text(
+                                    text = "Zoom: ${(scale * 100).toInt()}%",
+                                    style = MaterialTheme.typography.labelMedium,
+                                    color = MaterialTheme.colorScheme.onSurface
+                                )
+
+                                // Botón de colapsar/expandir
+                                IconButton(
+                                    onClick = { statsExpanded = !statsExpanded },
+                                    modifier = Modifier.size(32.dp)
+                                ) {
+                                    Icon(
+                                        imageVector = if (statsExpanded) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
+                                        contentDescription = if (statsExpanded) "Colapsar" else "Expandir",
+                                        tint = MaterialTheme.colorScheme.onSurface
+                                    )
+                                }
+                            }
+                        }
+
+                        // Contenido desplegable
+                        if (statsExpanded) {
+                            Divider(modifier = Modifier.padding(vertical = 6.dp))
+
+                            Column(
+                                verticalArrangement = Arrangement.spacedBy(4.dp)
+                            ) {
+                                StatsRow("Vehículos activos", snap.stats.activeVehicles.toString())
+                                StatsRow("En movimiento", "${snap.stats.moving} (${((snap.stats.moving.toFloat() / snap.stats.activeVehicles.coerceAtLeast(1)) * 100).toInt()}%)")
+                                StatsRow("Detenidos", snap.stats.stopped.toString())
+                                StatsRow("Velocidad media", "%.2f".format(snap.stats.avgSpeedCellsPerSec))
+                                StatsRow("Tiempo total", "${snap.stats.simTimeMs / 1000}s")
+                            }
+                        }
                     }
                 }
-
-                // Indicador de zoom
-                Text(
-                    text = "${(scale * 100).toInt()}%",
-                    modifier = Modifier
-                        .align(Alignment.TopEnd)
-                        .padding(12.dp),
-                    style = MaterialTheme.typography.labelMedium,
-                    color = MaterialTheme.colorScheme.onSurface
-                )
             }
 
             Divider()
@@ -175,8 +208,14 @@ fun SimulationScreen(viewModel: SimulationViewModel) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(0.4f)
+                    .background(MaterialTheme.colorScheme.background)  // Fondo blanco/tema
                     .verticalScroll(rememberScrollState())
-                    .padding(16.dp),
+                    .padding(
+                        start = 16.dp,
+                        end = 16.dp,
+                        top = 16.dp,
+                        bottom = padding.calculateBottomPadding() + 16.dp
+                    ),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 // CONTROLES PRINCIPALES
